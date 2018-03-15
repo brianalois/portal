@@ -1,0 +1,64 @@
+@import '~@angular/material/theming';
+@import '~@covalent/core/theming/all-theme';
+@import url('https://fonts.googleapis.com/css?family=Raleway:100,300,400');
+
+
+// Define a custom typography config that overrides the font-family
+// or any typography level.
+$typography: mat-typography-config(
+  $font-family: 'Raleway, monospace',
+  $headline: mat-typography-level(32px, 48px, 400)
+);
+
+@include mat-core($typography);
+
+//link for the colors
+//https://material.io/guidelines/style/color.html#color-color-palette
+
+$primary: mat-palette($mat-blue, 800);
+$accent: mat-palette($mat-pink, 500);
+$warn: mat-palette($mat-pink, 500);
+
+$theme: mat-light-theme($primary, $accent, $warn);
+//$theme: mat-dark-theme($primary, $custom-accent);
+
+.blue-grey-deep-orange {
+  $primary2: mat-palette($mat-blue-grey);
+  $accent2:  mat-palette($mat-deep-orange);
+  $warn2:    mat-palette($mat-red, 600);
+
+  $blue-grey-deep-orange: mat-light-theme($primary2, $accent2, $warn2);
+
+  @include angular-material-theme($blue-grey-deep-orange);
+  @include covalent-theme($blue-grey-deep-orange, $typography);
+}
+
+@include angular-material-theme($theme);
+@include covalent-theme($theme, $typography);
+
+//********************************************
+//********** ALTERNATIVE THEME ***************
+//********************************************
+$alt-primary: mat-palette($mat-yellow, 500);
+$alt-accent: mat-palette($mat-pink, 400);
+
+$alt-theme: mat-dark-theme($primary, $accent);
+.alternative{ //if parent class has this this alternative theme will be used
+  @include angular-material-theme($alt-theme);
+  @include covalent-theme($alt-theme, $typography);
+}
+
+//********************************************
+//********** CUSTOM COMPONENT THEME **********
+//********************************************
+$btn-primary: mat-palette($mat-yellow, 500);
+$btn-accent: mat-palette($mat-pink, 400);
+
+$btn-theme: mat-dark-theme($btn-primary, $btn-accent);
+.alt-btn{ //if parent class has this this alternative theme will be used
+  @include mat-button-theme($btn-theme);
+}
+// Name of themes are gotten from the list at the link below
+// https://github.com/angular/material2/blob/master/src/lib/core/theming/_all-theme.scss
+
+

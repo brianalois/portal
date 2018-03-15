@@ -1,0 +1,7 @@
+.kg-panel div {
+    max-height: 25vh;
+    overflow: scroll;
+    width: 300px;
+    margin-left: 20%;
+    padding: 2% 10%;
+}

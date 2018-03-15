@@ -1,0 +1,49 @@
+<td-layout>
+  <td-layout-nav-list [toolbarTitle]="!user ? env.app_name : ''" sidenavWidth="205px" [opened]="user">
+    <div td-sidenav-content>
+      <mat-nav-list>
+        <span *ngFor="let link of nav_links_user_side">
+
+          <div *ngIf="link.permission ? show(link.permission) : true">
+            <a *ngIf="!link.sub_links" [routerLink]="link.route" mat-list-item>{{link.name}}</a>
+            <mat-divider *ngIf="!link.sub_links"></mat-divider>
+            <td-expansion-panel *ngIf="link.sub_links" [label]="link.name">
+
+              <span *ngFor="let sub of link.sub_links">
+                <div *ngIf="sub.permission ? show(sub.permission) : true" class="push-left">
+                  <a mat-list-item routerLink="{{sub.route}}">{{sub.name}}</a>
+                  <mat-divider></mat-divider>
+                </div>
+              </span>
+            </td-expansion-panel>
+          </div>
+
+        </span>
+      </mat-nav-list>
+    </div>
+    <div td-toolbar-content layout="row" layout-align="start center" flex>
+      <button mat-icon-button tdLayoutNavListToggle *ngIf="user">
+        <mat-icon [@tdRotate]="triggerState" (click)="triggerState = !triggerState" [matTooltip]="!triggerState ? 'Hide Menu' : 'Open Menu'">arrow_back</mat-icon>
+      </button>
+      <button *ngIf="!user" mat-button routerLink="/">{{env.app_name}}</button>
+      <span flex></span>
+      <span *ngIf="user">
+        <span fxShow="false" fxShow.gt-sm class="inline">Hi User</span>
+
+        <span *ngFor="let link of nav_links_user_top">
+          <a mat-icon-button [matTooltip]="link.name" [routerLink]="link.route" (click)="link.action ? action(link.action) : null">
+            <mat-icon>{{link.icon}}</mat-icon>
+          </a>
+        </span>
+
+      </span>
+      <span *ngIf="!user">
+        <a *ngFor="let link of nav_links_no_user" [routerLink]="link.route" class="push-left-md">{{link.name}}</a>
+      </span>
+    </div>
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </td-layout-nav-list>
+</td-layout>
+

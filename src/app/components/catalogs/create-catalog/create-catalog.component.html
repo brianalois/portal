@@ -1,0 +1,30 @@
+<h2 class="md-display-2 push">Create Catalog</h2>
+<div ngClass.lt-md="mt-50" ngClass.gt-sm="mt-100" fxLayout="row" fxLayoutAlign="center">
+  <mat-card>
+    <h4 class="md-title text-center">Catalog Details</h4>
+    <td-dynamic-forms [elements]="createForm">
+      <ng-template let-element ngFor [ngForOf]="createForm"> 
+        <ng-template let-control="control" [tdDynamicFormsError]="element.name">
+          <span *ngIf="control.touched || !control.pristine">
+            <span *ngIf="control.hasError('required')">Required</span>
+            <span *ngIf="control.hasError('min')">Min value: {{element.min}}</span>
+            <span *ngIf="control.hasError('max')">Max value: {{element.max}}</span>
+            <span *ngIf="control.hasError('minlength')">Min length value: {{element.minLength}}</span>
+            <span *ngIf="control.hasError('maxlength')">Max length value: {{element.minLength}}</span>
+          </span>
+        </ng-template>
+      </ng-template>
+    </td-dynamic-forms>
+    <td-expansion-panel label="Assign Kiosk Groups" class="kg-panel">
+      <div>
+        <td-dynamic-forms [elements]="kioskGroups" class="checkbox-options">
+        </td-dynamic-forms>
+      </div>
+    </td-expansion-panel>
+    
+  </mat-card>
+  <mat-card>
+    <h4 class="md-title text-center push-bottom-sm">Products Available</h4>
+    <app-search-bar></app-search-bar>
+  </mat-card>
+</div>

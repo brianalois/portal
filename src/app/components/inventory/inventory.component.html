@@ -1,0 +1,9 @@
+<div>
+  <h2 class="md-display-2 push">Inventory</h2>
+  <app-search-bar (searchEvent)="table.search($event)"></app-search-bar>
+  <app-table
+        #table
+        [data]="data"
+        [columns]="columns">
+  </app-table>
+</div>

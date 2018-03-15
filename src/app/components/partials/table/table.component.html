@@ -1,0 +1,16 @@
+<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+  <td-data-table
+        fxFill
+        #dataTable
+        [data]="filteredData"
+        [columns]="columns"
+        [clickable]="true"
+        [sortable]="true"
+        [sortBy]="sortBy"
+        [(ngModel)]="selectedRow"
+        [sortOrder]="sortOrder"
+        (sortChange)="sort($event)"
+        (rowClick)="onRowClick($event)"
+        [style.height.px]="500">
+  </td-data-table>
+</div>
