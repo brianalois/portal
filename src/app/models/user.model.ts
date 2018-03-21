@@ -1,4 +1,4 @@
-import { Model }            from 'browser-model';
+import { Model }            from 'browser-orm';
 // import { Model }            from './model';
 import * as _               from 'underscore';
 import { LoginOptions }     from 'ngx-facebook';
