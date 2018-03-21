@@ -1,5 +1,5 @@
-import { Model }            from 'browser-orm';
-// import { Model }            from './model';
+import { Model, Col }            from 'browser-orm';
+// import { Model, Col }            from './model';
 import * as _               from 'underscore';
 import { API }              from './../helpers/api.helper';
 import { Util }             from './../helpers/util.helper';
@@ -7,15 +7,12 @@ import { Util }             from './../helpers/util.helper';
 export class ClientType extends Model {
   apiUpdateValues:Array<string> = ['name'];//these are the values that will be sent to the API
 
-  id;
-  role;
-  kind;
-
-  static SCHEMA = {
-    id:{type:'string', primary:true},//this means every time you make a new object you must give it a _id
-    role:{type:'string'},
-    kind:{name:{type:'string'}},
-  };
+  @Col({primary:true})
+  id:string;
+  @Col()
+  role:string;
+  @Col()
+  kind:Array<{name:string}>;
 
   constructor(obj:object){
     super(obj);

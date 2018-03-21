@@ -1,12 +1,13 @@
-<mat-toolbar class="push-bottom-md" [visible]="isVisible">
-  <td-search-box 
+<!--<mat-toolbar class="push-bottom-md" [visible]="isVisible">-->
+<mat-toolbar class="push-bottom-md">
+  <td-search-box
         class="full-width"
         placeholder="Search"
-        [(ngModel)]="searchTerm" 
+        [(ngModel)]="searchTerm"
         [showUnderline]="true"
-        [debounce]="500" 
-        [alwaysVisible]="true" 
-        (searchDebounce)="search()" 
+        [debounce]="500"
+        [alwaysVisible]="true"
+        (searchDebounce)="search()"
         (clear)="searchTerm = ''">
   </td-search-box>
 </mat-toolbar>

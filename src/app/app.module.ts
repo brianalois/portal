@@ -24,10 +24,27 @@ import { ApiGuard } from './guards/api.guard';
 import { AppComponent } from './app.component';
 import * as Comps from './components/components';
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    ...Object.keys(Comps).map(key => Comps[key]),
+    Comps.NavbarComponent,
+    Comps.HomeComponent,
+    Comps.LoginComponent,
+    Comps.RegisterComponent,
+    Comps.CompanyUpdateComponent,
+    Comps.CompanyCreateComponent,
+    Comps.CompanyListComponent,
+    Comps.DialogRemoveComponent,
+    Comps.DialogDefaultComponent,
+    Comps.ProfileComponent,
+    Comps.InventoryComponent,
+    Comps.SearchBarComponent,
+    Comps.FooterComponent,
+    Comps.TableComponent,
+    Comps.TransactionsComponent,
+    Comps.CreateCatalogComponent,
+    // ...Object.keys(Comps).map(key => Comps[key]),//cant get this to work with ng build --prod
   ],
   imports: [
     BrowserModule,

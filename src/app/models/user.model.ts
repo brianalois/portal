@@ -1,5 +1,5 @@
-import { Model }            from 'browser-orm';
-// import { Model }            from './model';
+import { Model, Col }            from 'browser-orm';
+// import { Model, Col }            from './model';
 import * as _               from 'underscore';
 import { LoginOptions }     from 'ngx-facebook';
 import { Company }          from './company.model';
@@ -12,35 +12,26 @@ import { Util }             from './../helpers/util.helper';
 export class User extends Model {
   apiUpdateValues:Array<string> = ['email', 'phone', 'first', 'last'];//these are the values that will be sent to the API
 
-  id;
-  first;
-  last;
-  auth;
-  token;
-  email;
-  phone;
-  role;
-  kind;
-  permissions;
-
-  static SCHEMA = {
-    id:{type:'string', primary:true},//this means every time you make a new object you must give it a _id
-    first:{type:'string'},
-    last:{type:'string'},
-    email:{type:'string'},
-    phone:{type:'string'},
-    auth:{type:'boolean'},
-    token:{type:'string'},
-    role:{type:'string'},
-    kind:{type:'string'},
-    permissions:[{
-      create:{type:'boolean'},
-      read:{type:'boolean'},
-      update:{type:'boolean'},
-      remove:{type:'boolean'},
-      name:{type:'string'}
-    }],
-  };
+  @Col({primary:true})
+  id:number;
+  @Col()
+  first:string;
+  @Col()
+  last:string;
+  @Col()
+  auth:boolean;
+  @Col()
+  token:string;
+  @Col()
+  email:string;
+  @Col()
+  phone:string;
+  @Col()
+  role:string;
+  @Col()
+  kind:string;
+  @Col()
+  permissions:Array<{name:string}>;
 
   constructor(obj:object){
     super(obj);

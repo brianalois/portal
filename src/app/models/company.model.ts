@@ -1,21 +1,21 @@
-import { Model }            from 'browser-orm';
-// import { Model }            from './model';
+import { Model, Col }            from 'browser-orm';
+// import { Model, Col }            from './model';
 import { User }             from './user.model';
-import * as _               from 'underscore';
 import { API }              from './../helpers/api.helper';
 import { Util }             from './../helpers/util.helper';
 
 export class Company extends Model {
   apiUpdateValues:Array<string> = ['name'];//these are the values that will be sent to the API
 
-  id;
-  name;
 
-  static SCHEMA = {
-    id:{type:'string', primary:true},//this means every time you make a new object you must give it a _id
-    name:{type:'string'},
-    users:[{user_id:{type:'string'}, permissions:[{type:'string'}]}],
-  };
+  help:string;
+
+  @Col({primary:true})
+  id:number;
+  @Col()
+  name:string;
+  @Col()
+  users: Array<{user_id:string, permissions:Array<string>}>;
 
   constructor(obj:object){
     super(obj);
