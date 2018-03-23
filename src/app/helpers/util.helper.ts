@@ -3,7 +3,7 @@ import * as pe              from 'parse-error';
 import { Http, Headers }    from '@angular/http';
 import { environment }      from '../../environments/environment';
 import { User }             from './../models/user.model';
-// import { FacebookService, InitParams, LoginOptions } from 'ngx-facebook';
+import { FacebookService, InitParams, LoginOptions } from 'ngx-facebook';
 import { Router }           from '@angular/router';
 
 import { Env }              from './env.helper';
@@ -34,6 +34,26 @@ export class Util {
 
   static get dialog(){
     return AppInjector.get( MatDialog);
+  }
+
+  static _fb_init:boolean = false;
+  static get fb(){
+    return AppInjector.get( FacebookService );
+  }
+
+  static get FB(){
+    if(!this._fb_init){
+      let initParams: InitParams = {
+        appId: Env.vari.facebook_app_id,
+        xfbml: true,
+        version: 'v2.8'
+      };
+
+      this.fb.init(initParams);
+      this._fb_init = true;
+    }
+
+    return this.fb;
   }
 
   //************************************

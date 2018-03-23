@@ -8,6 +8,7 @@ import * as jwt_decode      from 'jwt-decode';
 import { LoginInfo }        from './../interfaces/login-info';
 import { API }              from './../helpers/api.helper';
 import { Util }             from './../helpers/util.helper';
+declare var googleyolo: any;
 
 export class User extends Model {
   apiUpdateValues:Array<string> = ['email', 'phone', 'first', 'last'];//these are the values that will be sent to the API
@@ -170,47 +171,65 @@ export class User extends Model {
     return user;
   }
 
-  // static async LoginSocial(service: String){
-  //   let err, res;
-  //   let login_info: LoginInfo
-  //   switch(service){
-  //     case 'facebook':
-  //       // const scopes = 'public_profile,user_friends,email,pages_show_list';
-  //       const scopes = 'public_profile,user_friends,email,user_birthday';
-  //       const loginOptions: LoginOptions = {
-  //         enable_profile_selector: true,
-  //         return_scopes: true,
-  //         scope: scopes
-  //       };
-  //       [err, res] = await Util.to(this.fb.login(loginOptions));
-  //
-  //       let a_res = res.authResponse;
-  //       [err, res] = await Util.to(this.fb.api('/me'+'?fields=id,name,picture,email,birthday,gender,age_range,devices,location,first_name,last_name,website'));
-  //       [err ,res] = await Util.to(Util.post('/v1/social-auth/facebook', {auth_response:a_res, user_info:res}));
-  //
-  //       if(res.success == false){
-  //         err = res.error
-  //       }
-  //       if(err) Util.TE(err, true);
-  //       login_info = {
-  //         token:res.token,
-  //         user:res.user
-  //       }
-  //
-  //       break;
-  //     case  'google':
-  //       err = 'google login not setup';
-  //       break;
-  //     default:
-  //       err = 'no auth login service selected';
-  //       break;
-  //   }
-  //
-  //   let user;
-  //   if(!err) user = this.Login(login_info);
-  //
-  //   if(!user) Util.TE('Error loggin user in', true);
-  //   return user
-  // }
+  static async LoginSocial(service: String){
+    let err, res, opts;
+    let login_info: LoginInfo;
+    switch(service){
+      case 'facebook':
+        // const scopes = 'public_profile,user_friends,email,pages_show_list';
+        const scopes = 'public_profile,user_friends,email,user_birthday';
+        const loginOptions: LoginOptions = {
+          enable_profile_selector: true,
+          return_scopes: true,
+          scope: scopes
+        };
+        [err, res] = await Util.to(Util.FB.login(loginOptions));
+
+        let a_res = res.authResponse;
+        [err, res] = await Util.to(Util.FB.api('/me'+'?fields=id,name,picture,email,birthday,gender,age_range,devices,location,first_name,last_name,website'));
+
+        console.log('err', err, 'res', res);
+        [err ,res] = await Util.to(Util.post('/v1/users/login/facebook', {auth_response:a_res, user_info:res}));
+
+
+        break;
+      case  'google':
+
+        opts = {
+          supportedAuthMethods: ["https://accounts.google.com"],
+          supportedIdTokenProviders: [{
+            uri: "https://accounts.google.com",
+            clientId: Util.env.vari.googel_app_id,
+          }]
+        };
+
+        [err, res] = await Util.to(googleyolo.hint(opts));
+        if(err) Util.TE('Error loggin in user with google.');
+        if(!res.idToken) Util.TE('Could not get idToken from google');
+
+
+        [err, res] = await Util.to(Util.post('/v1/users/login/google', {token:res.idToken}))
+
+        break;
+      default:
+        err = 'no auth login service selected';
+        break;
+    }
+
+    if(res.success == false) err = res.error
+    if(err) Util.TE(err, true);
+
+    login_info = {
+      token:res.token,
+      user:res.user
+    }
+
+    let user;
+    if(err) Util.TE(err, true);
+    if(!err) user = this.Login(login_info);
+
+    if(!user) Util.TE('Error loggin user in', true);
+    return user
+  }
 
 }

@@ -42,4 +42,8 @@ export class Env {
     return this._app_name;
   }
 
+  static get vari():any {
+    return environment;
+  }
+
 }

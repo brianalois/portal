@@ -5,6 +5,18 @@
     <div *ngIf="register===true" fxLayout="row" fxLayoutAlign="center"><a (click)="onTryLogin()">Click Here&nbsp;</a>to log in.</div>
     <form (ngSubmit)="onSubmit()"  [formGroup]="loginForm">
 
+      <div fxLayout="row" fxLayoutAlign="center">
+        <button (click)="loginWithSocial('facebook')" class="loginBtn loginBtn-facebook">
+          Login with Facebook
+        </button>
+
+        <button class="mat-h1 mt-25" (click)="loginWithSocial('google')" class="loginBtn loginBtn-google">
+          Login with Google
+        </button>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="center" class="mat-h2 mt-25">Or</div>
+
       <mat-form-field class="full-width">
         <input formControlName="unique" [(ngModel)]="user_info.unique" matInput placeholder="Email or Phone" name="unique" [autofocus]="true">
         <!--<mat-hint>Errors appear instantly!</mat-hint>-->

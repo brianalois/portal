@@ -91,6 +91,15 @@ export class LoginComponent implements OnInit {
     return this.user.to('update');
   }
 
+  async loginWithSocial(social:string){
+
+    let err, user:User;
+    [err, user] = await Util.to(User.LoginSocial(social));
+    if(err) Util.TE(err);
+
+    if(user) user.to('update')
+  }
+
   async create(data: Object){
     if(this.user_info.confirm_password!=this.user_info.password){
       this.throwInputError('confirmPassword', 'Passwords do not match');
