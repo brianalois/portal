@@ -7,7 +7,8 @@
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+    "lib": ["es6", "dom", "esnext"],
   },
   "files": [
     "test.ts"

@@ -8,10 +8,16 @@ import { RouterModule }     from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+
 import { routing } from './app.routing';
 import { FacebookModule } from 'ngx-facebook';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
+
+import { ApolloModule, Apollo } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 // services
 import { UtilService } from './services/util.service';
@@ -58,6 +64,9 @@ import * as Comps from './components/components';
     ReactiveFormsModule,
     MaterialModule,
     CovalentModule,
+    HttpClientModule, // provides HttpClient for HttpLink
+    ApolloModule,
+    HttpLinkModule
   ],
   entryComponents: [
     Comps.DialogDefaultComponent,
@@ -73,8 +82,19 @@ import * as Comps from './components/components';
 })
 
 export class AppModule { // https://stackoverflow.com/questions/39101865/angular-2-inject-dependency-outside-constructor
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    apollo: Apollo,
+    httpLink: HttpLink,
+  ) {
     AppInjector = injector;
+
+    apollo.create({
+      // By default, this client will send queries to the
+      // `/graphql` endpoint on the same host
+      link: httpLink.create({ uri: 'http://localhost:8082/graphql' }),
+      cache: new InMemoryCache()
+    });
   }
 }
 export let AppInjector: Injector;

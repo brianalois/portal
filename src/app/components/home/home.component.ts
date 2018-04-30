@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {UtilService} from "../../services/util.service";
+import gql from 'graphql-tag';
+import { Apollo } from 'apollo-angular';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,16 @@ import {UtilService} from "../../services/util.service";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private util:UtilService) { }
+  constructor(apollo: Apollo) {
+    apollo.query({query:
+        gql`query{
+              getUser(id:1){
+                id
+                email
+              }
+            }`
+    }).subscribe(console.log);
+  }
 
   async ngOnInit() {
 
