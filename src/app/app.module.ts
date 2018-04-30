@@ -16,8 +16,11 @@ import { FacebookModule } from 'ngx-facebook';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { ApolloModule, Apollo } from 'apollo-angular';
+import { split } from 'apollo-link';
+import { WebSocketLink } from 'apollo-link-ws';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { getMainDefinition } from 'apollo-utilities';
 
 // services
 import { UtilService } from './services/util.service';
@@ -89,10 +92,32 @@ export class AppModule { // https://stackoverflow.com/questions/39101865/angular
   ) {
     AppInjector = injector;
 
+    // Create an http link:
+    const http = httpLink.create({
+      uri: 'http://localhost:8082/graphql'
+    });
+
+    // Create a WebSocket link:
+    const ws = new WebSocketLink({
+      uri: `ws://localhost:8082/subscriptions`,
+      options: {
+        reconnect: true
+      }
+    });
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        let definition = getMainDefinition(query);
+        return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+      },
+      ws,
+      http,
+    );
+
     apollo.create({
-      // By default, this client will send queries to the
-      // `/graphql` endpoint on the same host
-      link: httpLink.create({ uri: 'http://localhost:8082/graphql' }),
+
+      link: link,
       cache: new InMemoryCache()
     });
   }
